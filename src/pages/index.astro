@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PricingCalculator } from '../components/PricingCalculator';
+import { FreemiumCalculator } from '../components/FreemiumCalculator';
+import { MetricsDashboard } from '../components/MetricsDashboard';
+import { StripeLinkGenerator } from '../components/StripeLinkGenerator';
+---
+
+<BaseLayout>
+  <main class="flex-grow">
+    <!-- Nav -->
+    <nav class="mx-auto max-w-6xl px-6 py-5 flex items-center justify-between" aria-label="Main">
+      <a href="/" class="flex items-center gap-2.5 group" aria-label="Home">
+        <div class="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center text-black font-bold text-lg group-hover:scale-105 transition-transform">P</div>
+        <span class="text-white font-bold text-xl font-display">Pricify</span>
+      </a>
+      <a href="#tools" class="btn-primary text-base px-5 py-2.5 !text-sm">Get Started</a>
+    </nav>
+
+    <!-- Hero -->
+    <section class="mx-auto max-w-4xl px-6 pt-16 pb-12 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-400 mb-8">
+        Free. No signup. No tracking.
+      </div>
+      <h1 class="text-white mb-6 leading-[1.1] max-w-3xl mx-auto">
+        Stop guessing what to charge.<br/>
+        <span class="bg-gradient-to-r from-emerald-400 to-emerald-200 bg-clip-text text-transparent">Start knowing.</span>
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-10">
+        Four free tools that turn your costs, customers, and goals into a pricing plan that actually works. Built by an indie maker for indie makers.
+      </p>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a href="#tools" class="btn-primary">Calculate Your Price</a>
+        <a href="#how" class="btn-secondary">How It Works</a>
+      </div>
+      <p class="text-xs text-zinc-600 mt-6">Used by 0 indie makers this week. No account required.</p>
+    </section>
+
+    <!-- Tools -->
+    <section id="tools" class="mx-auto max-w-6xl px-6 pb-24">
+      <div class="mb-12 text-center">
+        <h2 class="text-white mb-3">The Toolkit</h2>
+        <p class="text-zinc-500 text-lg">Everything you need to price and grow your SaaS.</p>
+      </div>
+
+      <!-- Tab Bar -->
+      <div class="flex flex-wrap gap-2 mb-10 justify-center" role="tablist" aria-label="Tools">
+        {[
+          { id: 'pricing', label: 'Pricing', icon: '＄' },
+          { id: 'freemium', label: 'Freemium', icon: '∞' },
+          { id: 'metrics', label: 'Metrics', icon: '↗' },
+          { id: 'stripe', label: 'Stripe Link', icon: '◎' },
+        ].map((tab, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-${tab.id}`}
+            aria-controls={`panel-${tab.id}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            data-tab={tab.id}
+            class="tab-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all border border-zinc-800 hover:border-zinc-600 hover:text-white text-zinc-400"
+          >
+            <span aria-hidden="true" class="text-base">{tab.icon}</span>
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      <!-- Tab Panels -->
+      <div class="card" role="tabpanel" id="panel-pricing" aria-labelledby="tab-pricing">
+        <h3 class="text-white mb-6 flex items-center gap-2"><span class="text-emerald-400 text-2xl">＄</span> Pricing Calculator</h3>
+        <PricingCalculator client:load />
+      </div>
+
+      <div class="card hidden" role="tabpanel" id="panel-freemium" aria-labelledby="tab-freemium">
+        <h3 class="text-white mb-6 flex items-center gap-2"><span class="text-emerald-400 text-2xl">∞</span> Freemium Calculator</h3>
+        <FreemiumCalculator client:load />
+      </div>
+
+      <div class="card hidden" role="tabpanel" id="panel-metrics" aria-labelledby="tab-metrics">
+        <h3 class="text-white mb-6 flex items-center gap-2"><span class="text-emerald-400 text-2xl">↗</span> SaaS Metrics</h3>
+        <MetricsDashboard client:load />
+      </div>
+
+      <div class="card hidden" role="tabpanel" id="panel-stripe" aria-labelledby="tab-stripe">
+        <h3 class="text-white mb-6 flex items-center gap-2"><span class="text-emerald-400 text-2xl">◎</span> Stripe Payment Link Generator</h3>
+        <StripeLinkGenerator client:load />
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how" class="mx-auto max-w-6xl px-6 pb-24">
+      <div class="mb-12 text-center">
+        <h2 class="text-white mb-3">How It Works</h2>
+        <p class="text-zinc-500 text-lg">Three minutes. Four tools. One pricing plan.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[
+          { step: '1', title: 'Enter Your Numbers', desc: 'Monthly costs, customer count, growth goals. Whatever you know, plug it in. The math handles the rest.' },
+          { step: '2', title: 'See the Results', desc: 'Every change updates instantly. Play with conversion rates, churn, and pricing until it feels right.' },
+          { step: '3', title: 'Ship With Confidence', desc: 'Copy the Stripe code. Set up your payment page. Launch knowing your unit economics work.' },
+        ].map(({ step, title, desc }) => (
+          <div class="card text-center">
+            <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 font-bold text-xl mx-auto mb-4">{step}</div>
+            <h3 class="text-white text-lg mb-2">{title}</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="mx-auto max-w-4xl px-6 pb-12 text-center">
+      <div class="card border-emerald-500/20 bg-emerald-500/5">
+        <h2 class="text-white mb-3">Ready to stop guessing?</h2>
+        <p class="text-zinc-400 text-lg mb-6">Free forever. Built by an indie maker who got tired of spreadsheets.</p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="#tools" class="btn-primary">Calculate Your Price Now</a>
+          <a href="https://buy.stripe.com" rel="nofollow sponsored" target="_blank" class="btn-secondary !text-sm !px-5 !py-2.5">Set up Stripe →</a>
+        </div>
+        <p class="text-xs text-zinc-600 mt-4">When you're ready to accept payments, Stripe takes 5 minutes to set up. We earn a small commission if you sign up through our link.</p>
+      </div>
+    </section>
+
+    <!-- Carbon Ad Slot -->
+    <section class="mx-auto max-w-4xl px-6 pb-12 text-center">
+      <div id="carbon-ads" class="card border-zinc-800 bg-zinc-900/30 min-h-[120px] flex items-center justify-center">
+        <p class="text-sm text-zinc-600">Ad slot — <a href="https://www.carbonads.net" class="text-zinc-500 hover:text-zinc-300 transition-colors underline" target="_blank" rel="nofollow">Advertise here</a></p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mx-auto max-w-6xl px-6 pb-12 text-center border-t border-zinc-800 pt-8">
+      <div class="flex items-center justify-center gap-6 text-sm text-zinc-500 mb-4 flex-wrap">
+        <a href="https://thirkle.vercel.app" class="hover:text-white transition-colors">Built by ThirkleBot</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://thirkle.vercel.app/thirklebot" class="hover:text-white transition-colors">Agent Dashboard</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://thirkle.vercel.app/devlog" class="hover:text-white transition-colors">Dev Log</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://ko-fi.com/jordanthirkle" target="_blank" rel="nofollow" class="hover:text-amber-400 transition-colors">☕ Support</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://buy.stripe.com" target="_blank" rel="nofollow sponsored" class="hover:text-emerald-400 transition-colors">Stripe</a>
+      </div>
+      <p class="text-xs text-zinc-600">Pricify · Free tools for indie makers · No data collected · No account required · Some links are affiliate referrals</p>
+    </footer>
+  </main>
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('[role="tabpanel"]');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-tab');
+
+      buttons.forEach(b => {
+        b.setAttribute('aria-selected', 'false');
+        b.classList.remove('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/20');
+        b.classList.add('text-zinc-400', 'border-zinc-800');
+      });
+
+      btn.setAttribute('aria-selected', 'true');
+      btn.classList.remove('text-zinc-400', 'border-zinc-800');
+      btn.classList.add('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/20');
+
+      panels.forEach(p => {
+        if (p.id === `panel-${targetId}`) {
+          p.classList.remove('hidden');
+        } else {
+          p.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  buttons[0]?.classList.remove('text-zinc-400', 'border-zinc-800');
+  buttons[0]?.classList.add('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/20');
+</script>
+
+<style>
+  .hidden { display: none; }
+</style>
